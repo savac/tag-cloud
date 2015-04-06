@@ -12,7 +12,7 @@ def read_info(infile="../data/info.tsv"):
             result.append(line.split("\t"))
     return result
     
-def read_corpus():
+def read_corpus(ngramOrder=1):
     '''
     Read all files in collection and return the tf count. The output array
     has a shape: nr_of_docs x vocabulary_size. This function also returns
@@ -28,33 +28,38 @@ def read_corpus():
     tokenizer = nltk.tokenize.RegexpTokenizer(pattern) # this will only keep words
     stemmer = nltk.stem.porter.PorterStemmer();
     info = read_info() # [[doc_path, president, title, data],...]
-    VOCAB_SIZE = int(1e5) # trim this later but ideally we should grow this
     NUM_DOCS = len(info) # get number of docs
-    vocab = list()
-    tf = np.zeros((NUM_DOCS, VOCAB_SIZE))
+    vocab = list() # a list for the vocabulary
+    thisList = list() # a list of document tf vectors
     for indDoc in range(0, NUM_DOCS):
         # read file
         infile = open(info[indDoc][0], 'r').read()
-        infile = infile.replace('&#39;', "'")
+        infile = infile.replace('&#39;', "'") # TBD: this in the scraper
         infile =  infile.replace('&mdash;', "-")
         
-        tokens = tokenizer.tokenize(infile)
-        for token in tokens:
+        tokens = tokenizer.tokenize(infile.lower())
+        this = [0]*len(vocab) # init with the current size of the vocab
+        for t in range(0, len(tokens)-ngramOrder+1):
             try:
-                new_token = token.lower() #stemmer.stem(token.lower())
+                new_token = ' '.join(tokens[t:t+ngramOrder]) #stemmer.stem(token.lower())
                 try:
                     ind = vocab.index(new_token) # get the index in the vocabulary
+                    this[ind]+=1
                 except ValueError:
-                    vocab.append(new_token) # add to the vocabulary
-                    ind = len(vocab) 
-                tf[indDoc, ind]+=1 # increment the count for this doc
+                    vocab.append(new_token) # grow the vocabulary
+                    this.append(1) # grow the document vector
             except UnicodeDecodeError:
                 continue
+        thisList.append(this)
         # progress
         sys.stdout.write("\rReading collection: %d%%" %(indDoc*100/NUM_DOCS))
         sys.stdout.flush()     
            
-    tf = tf[:,0:len(vocab)] # trim the sparse matrix with counts
+    # put the document vectors into a numpy array
+    tf = np.zeros((NUM_DOCS, len(vocab)), dtype='uint8') # assume no ngram count exceeds 2^8
+    for indDoc in range(0, NUM_DOCS):
+        thisLength = len(thisList[indDoc])
+        tf[indDoc, 0:thisLength] = thisList[indDoc]
     return (vocab, tf)
 
 def tfidf(tf):
@@ -69,7 +74,7 @@ def tfidf(tf):
     N = tf.shape[0] # number of docs in the corpus
     appCorpus = np.sum(tf>0, 0) # get the nr of documents where the word appears
     idf = np.log(float(N)/appCorpus)
-    weights = np.zeros(tf.shape) # init array for weights
+    weights = np.zeros(tf.shape, dtype='float') # init array for weights
     for i in range(0, tf.shape[0]):
         weights[i,:] = tf[i,:]*idf
     return weights
