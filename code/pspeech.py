@@ -18,35 +18,25 @@ def read_corpus(ngramOrder=1):
     has a shape: nr_of_docs x vocabulary_size. This function also returns
     the vocalubary which is a list of words.
     '''
-    pattern = r'''(?x)               # set flag to allow verbose regexps
-              ([A-Z]\.)+         # abbreviations, e.g. U.S.A.
-              | \$?\d+(\.\d+)?%? # numbers, incl. currency and percentages
-              | \w+([-']\w+)*    # words w/ optional internal hyphens/apostrophe
-              | [+/\-@&*]        # special characters with meanings
-            '''
-    
-    tokenizer = nltk.tokenize.RegexpTokenizer(pattern) # this will only keep words
-    stemmer = nltk.stem.porter.PorterStemmer();
     info = read_info() # [[doc_path, president, title, data],...]
     NUM_DOCS = len(info) # get number of docs
-    vocab = list() # a list for the vocabulary
+    vocab = dict() # a list for the vocabulary
     thisList = list() # a list of document tf vectors
+    indDict = 0
     for indDoc in range(0, NUM_DOCS):
-        # read file
-        infile = open(info[indDoc][0], 'r').read()
-        infile = infile.replace('&#39;', "'") # TBD: this in the scraper
-        infile =  infile.replace('&mdash;', "-")
-        
-        tokens = tokenizer.tokenize(infile.lower())
+        tokens = speech_tokenizer(info[indDoc][0]) # open speech file and tokenize
         this = [0]*len(vocab) # init with the current size of the vocab
         for t in range(0, len(tokens)-ngramOrder+1):
             try:
-                new_token = ' '.join(tokens[t:t+ngramOrder]) #stemmer.stem(token.lower())
+                new_token = ' '.join(tokens[t:t+ngramOrder])
                 try:
-                    ind = vocab.index(new_token) # get the index in the vocabulary
+                    #ind = vocab.index(new_token) # get the index in the vocabulary
+                    ind = vocab[new_token]
                     this[ind]+=1
-                except ValueError:
-                    vocab.append(new_token) # grow the vocabulary
+                except KeyError:
+                    #vocab.append(new_token) # grow the vocabulary
+                    vocab[new_token]=indDict
+                    indDict+=1
                     this.append(1) # grow the document vector
             except UnicodeDecodeError:
                 continue
@@ -60,7 +50,45 @@ def read_corpus(ngramOrder=1):
     for indDoc in range(0, NUM_DOCS):
         thisLength = len(thisList[indDoc])
         tf[indDoc, 0:thisLength] = thisList[indDoc]
+    
+    # will be using vocabulary with indexing later so faster in a list
+    temp = ['']*len(vocab)
+    for k in vocab:
+        temp[vocab[k]]=k
+    vocab=temp
+    
     return (vocab, tf)
+
+def speech_tokenizer(infile):
+    pattern = r'''(?x)               # set flag to allow verbose regexps
+              ([A-Z]\.)+         # abbreviations, e.g. U.S.A.
+              | \$?\d+(\.\d+)?%? # numbers, incl. currency and percentages
+              | \w+([-']\w+)*    # words w/ optional internal hyphens/apostrophe
+              | [+/\-@&*]        # special characters with meanings
+            '''
+    tokenizer = nltk.tokenize.RegexpTokenizer(pattern) # this will only keep words
+    #stemmer = nltk.stem.porter.PorterStemmer();
+    # read file
+    infile = open(infile, 'r').read()
+    infile = infile.replace('&#39;ll', " will")
+    infile = infile.replace('&#39;ve', " have")
+    infile = infile.replace('don&#39;', "do ")
+    infile = infile.replace('shouldn&#39;', "should ")
+    infile = infile.replace('doesn&#39;', "does ")
+    infile = infile.replace('&#39;', " ")
+    
+    infile = infile.replace('&rsquo;ll', " will")
+    infile = infile.replace('&rsquo;ve', " have")
+    infile = infile.replace('don&rsquo;', "do ")
+    infile = infile.replace('shouldn&rsquo;', "should ")
+    infile = infile.replace(' t ', " not ")
+    infile = infile.replace('doesn&rsquo;', "does ")
+    infile = infile.replace('&rsquo;', " ")
+    
+    infile = infile.replace('&mdash;', " ")
+    
+    tokens = tokenizer.tokenize(infile.lower())
+    return tokens
 
 def tfidf(tf):
     '''
@@ -78,6 +106,21 @@ def tfidf(tf):
     for i in range(0, tf.shape[0]):
         weights[i,:] = tf[i,:]*idf
     return weights
+    
+def bm25(tf):
+    k1 = 1.6
+    b = 0.75
+    N = tf.shape[0] # number of docs in the corpus
+    avgD = np.sum(tf)/float(N)
+    appCorpus = np.sum(tf>0, 0) # get the nr of documents where the word appears
+    idf = np.log((float(N) - appCorpus + 0.5)/(appCorpus + 0.5))
+    #idf = np.log(float(N)/appCorpus)
+    weights = np.zeros(tf.shape, dtype='float') # init array for weights
+    for i in range(0, tf.shape[0]):
+        lengthD = np.sum(tf[i,:])
+        weights[i,:] = idf * tf[i,:] * (k1+1) / (tf[i,:] + k1 * (1 - b + b * lengthD/avgD))
+    return weights
+    
 
 def filter_speech(filt, filt_type='president'):
     info = read_info()
