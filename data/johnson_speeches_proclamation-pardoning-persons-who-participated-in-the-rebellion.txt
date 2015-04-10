@@ -18,7 +18,7 @@ Tenth. All persons who left their homes within the jurisdiction and protection o
 Eleventh. All persons who have been engaged in the destruction of the commerce of the United States upon the high seas and all persons who have made raids into the United States from Canada or been engaged in destroying the commerce of the United States upon the lakes and rivers that separate the British Provinces from the United States.
 Twelfth. All persons who, at the time when they seek to obtain the benefits hereof by taking the oath herein prescribed, are in military, naval, or civil confinement or custody, or under bonds of the civil, military, or naval authorities or agents of the United States as prisoners of war, or persons detained for offenses of any kind, either before or after conviction.
 Thirteenth. All persons who have voluntarily participated in said rebellion and the estimated value of whose taxable property is over $20,000.
-Fourteenth. All persons who have taken the oath of amnesty as prescribed in the President&#39;s proclamation of December 8, A. D. 1863, or an oath of allegiance to the Government of the United States since the date of said proclamation and who have not thenceforward kept and maintained the same inviolate.
+Fourteenth. All persons who have taken the oath of amnesty as prescribed in the President proclamation of December 8, A. D. 1863, or an oath of allegiance to the Government of the United States since the date of said proclamation and who have not thenceforward kept and maintained the same inviolate.
 Provided, That special application may be made to the President for pardon by any person belonging to the excepted classes, and such clemency will be liberally extended as may be consistent with the facts of the case and the peace and dignity of the United States.
 The Secretary of State will establish rules and regulations for administering and recording the said amnesty oath, so as to insure its benefit to the people and guard the Government against fraud.
 In testimony whereof I have hereunto set my hand and caused the seal of the United States to be affixed.
@@ -27,4 +27,4 @@ ANDREW JOHNSON.
 By the President:
 WILLIAM H. SEWARD,
 Secretary of State.
-&nbsp;
+ 

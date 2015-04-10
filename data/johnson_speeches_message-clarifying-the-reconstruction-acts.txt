@@ -1,6 +1,6 @@
 
 WAR DEPARTMENT,
-ADJUTANT-GENERAL&#39;S OFFICE
+ADJUTANT-GENERAL S OFFICE
 Whereas several commanders of military districts created by the acts of Congress known as the reconstruction acts have expressed doubts as to the proper construction thereof and in respect to some of their powers and duties under said acts, and have applied to the Executive for information in relation thereto; and
 Whereas the said acts of Congress have been referred to the Attorney-General for his opinion thereon, and the said acts and the opinion of the Attorney-General have been fully and carefully considered by the President in conference with the heads of the respective Departments:
 The President accepts the following as a practical interpretation of the aforesaid acts of Congress on the points therein presented, and directs the same to be transmitted to the respective military commanders for their information, in order that there may be uniformity in the execution of said acts:
@@ -41,4 +41,4 @@ The board can not enter into any inquiry as to the qualifications of any person 
 By order of the President:
 E.D. TOWNSEND,
 Assistant Adjutant-General.
-&nbsp;
+ 
