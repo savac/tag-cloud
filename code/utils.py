@@ -82,7 +82,7 @@ def speech_tokenizer(infile):
      41: 'there', 43: 'an', 45: 'which', 46: 'she', 47: 'do', 48: 'how', 49: 'their', 
     50: 'if', 51: 'will', 52: 'up', 53: 'other', 54: 'about', 55: 'out', 56: 'many', 57: 'then', 58: 'them', 59: 'these', 
     60: 'so', 61: 'some', 62: 'her', 63: 'would', 66: 'him', 67: 'into', 69: 'has', 
-    82: 'than', 85: 'been', 87: 'who', 89: 'its'}
+    82: 'than', 85: 'been', 87: 'who', 89: 'its', 90: 'Bless'}
     
     common100 = common100.values()
     
@@ -93,30 +93,18 @@ def speech_tokenizer(infile):
               | [+/\-@&*]        # special characters with meanings
             '''
     tokenizer = nltk.tokenize.RegexpTokenizer(pattern) # this will only keep words
-    #stemmer = nltk.stem.porter.PorterStemmer();
-    # read file
-    infile = open(infile, 'r').read()
-    infile = infile.replace('&#39;ll', " will")
-    infile = infile.replace('&#39;ve', " have")
-    infile = infile.replace('don&#39;', "do ")
-    infile = infile.replace('shouldn&#39;', "should ")
-    infile = infile.replace('doesn&#39;', "does ")
-    infile = infile.replace('&#39;', " ")
-    
-    infile = infile.replace('&rsquo;ll', " will")
-    infile = infile.replace('&rsquo;ve', " have")
-    infile = infile.replace('don&rsquo;', "do ")
-    infile = infile.replace('shouldn&rsquo;', "should ")
-    infile = infile.replace(' t ', " not ")
-    infile = infile.replace('doesn&rsquo;', "does ")
-    infile = infile.replace('&rsquo;', " ")
-    
-    infile = infile.replace('&mdash;', " ")
-    infile = infile.replace(' s ', " ")
-    infile = infile.replace(' m ', " am ")
 
+    # read file
+    text = open(infile, 'r').read()
     
-    tokens = tokenizer.tokenize(infile.lower())
+    # split into sentences and then change the first word to lower case
+    sentences = nltk.sent_tokenize(text)
+    tokens = []
+    for sentence in sentences:
+        this = tokenizer.tokenize(sentence)
+        if len(this)>0:
+            this[0] = this[0].lower()
+        tokens = tokens + this
     
     # Disregard the most commom words in English
     res = []
