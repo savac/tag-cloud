@@ -2,7 +2,7 @@ import nltk
 import numpy as np
 import sys
 
-def read_info(infile="../data/info.tsv"):
+def read_info(infile="../info.tsv"):
     '''Read in info.tsv and output a list of lists of the form:
     [[doc_path, president, title, data],...]'''
     result = []
