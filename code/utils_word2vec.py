@@ -10,35 +10,6 @@ import os
 import nltk.data
 import sys
 
-class MySentences(object):
-    def __init__(self, dirname):
-        self.dirname = dirname
-
-    '''
-    This tokenizer divides a text into a list of sentences,
-    by using an unsupervised algorithm to build a model for
-    abbreviation words, collocations, and words that start
-    sentences. It must be trained on a large collection of
-    plaintext in the target language before it can be used.
-
-    The NLTK data package includes
-    a pre-trained Punkt tokenizer for English.
-    '''
-
-    def __iter__(self):
-        sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
-        info = utils.read_info() # [[doc_path, president, title, data],...]
-        NUM_DOCS = len(info) # get number of docs
-        indDoc = 0
-        for fname in os.listdir(self.dirname):
-            # progress
-            indDoc +=1
-            sys.stdout.write("\rReading collection: %d%%" %(indDoc*100/NUM_DOCS))
-            sys.stdout.flush()
-
-            text = open(os.path.join(self.dirname, fname)).read()
-            yield sent_detector.tokenize(text.strip())
-
 def sentence_process(sentence):
 
     '''
@@ -88,6 +59,16 @@ def sentence_process(sentence):
 
 def read_corpus_word2vec():
     info = utils.read_info("../info.tsv")
+    '''
+    This tokenizer divides a text into a list of sentences,
+    by using an unsupervised algorithm to build a model for
+    abbreviation words, collocations, and words that start
+    sentences. It must be trained on a large collection of
+    plaintext in the target language before it can be used.
+
+    The NLTK data package includes
+    a pre-trained Punkt tokenizer for English.
+    '''
     sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
     sentences = []
     NUM_DOCS = len(info) # get number of docs
