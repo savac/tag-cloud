@@ -48,4 +48,8 @@ def run_model(model_name, vocab, tf):
     return top_words
 
 #if __name__ == '__main__':
+    (vocab,tf) = utils.read_corpus()
+    weights = tfidf(tf)
+    topWords = utils.get_tags(vocab, weights, 0) # get top 20 words for Obama's Acceptance Speech
+    print topWords
     #run_model(model_name, params)

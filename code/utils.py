@@ -21,6 +21,7 @@ def read_corpus(ngramOrder=1, posWeightFlag=False):
     info = read_info() # [[doc_path, president, title, data],...]
     NUM_DOCS = len(info) # get number of docs
     vocab = dict() # a list for the vocabulary
+    thisDict = dict() # a dict of document tf vectors
     thisList = list() # a list of document tf vectors
     indDict = 0
     for indDoc in range(0, NUM_DOCS):
@@ -136,8 +137,12 @@ def get_tags(vocab, weights, indDoc, topN=20):
     
     
 if __name__ == '__main__':
-    (vocab,tf) = read_corpus()
-    weights = tfidf(tf)
-    topWords = get_tags(vocab, weights, 0) # get top 20 words for Obama's Acceptance Speech
-    print topWords
-
+    #(vocab,tf) = read_corpus()
+    #weights = tfidf(tf)
+    #topWords = get_tags(vocab, weights, 0) # get top 20 words for Obama's Acceptance Speech
+    #print topWords
+    info = read_info()
+    for i in range(len(info)):
+        path = info[i][0].split("/")[-1]
+        print "%d %s" % (i, path)
+        
