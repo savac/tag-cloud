@@ -33,23 +33,26 @@ def bm25(tf):
     return weights
 
 def run_model(model_name, vocab, tf):
-    #(vocab,tf) = utils.read_corpus()
-    N = len(tf) # number of docs in corpus
+    speech_info = utils.read_speech_info()
+    N = len(speech_info) # number of docs in corpus
     weights = []
     if model_name == "bm25":
         weights = bm25(tf)
     elif model_name == "tfidf":
         weights = tfidf(tf)
 
-    top_words = []
+    top_words = {}
     for i in range(N):
         gen_tags = utils.get_tags(vocab, weights, i)
-        top_words += gen_tags
+        top_words[speech_info[i]] = gen_tags
     return top_words
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
     (vocab,tf) = utils.read_corpus()
-    weights = tfidf(tf)
-    topWords = utils.get_tags(vocab, weights, 0) # get top 20 words for Obama's Acceptance Speech
-    print topWords
-    #run_model(model_name, params)
+    #weights = tfidf(tf)
+    #topWords = utils.get_tags(vocab, weights, 0) # get top 20 words for Obama's Acceptance Speech
+    #print topWords
+    run_model("tfidf", vocab, tf)
+    #speech_info = utils.read_speech_info()
+    #for si in speech_info:
+        #print speech_info[si]

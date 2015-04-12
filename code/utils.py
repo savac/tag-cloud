@@ -11,7 +11,17 @@ def read_info(infile="../info.tsv"):
             line = line.strip("\n")
             result.append(line.split("\t"))
     return result
-    
+
+def read_speech_info(infile="../speech_info.txt"):
+    '''Read in speech_info.txt and outputs a dict of the form:
+    {idx:path}'''
+    results = {}
+    with open(infile, "r") as content:
+        for line in content:
+            line = line.strip().split(" ")
+            results[int(line[0])] = line[1]
+    return results
+
 def read_corpus(ngramOrder=1, posWeightFlag=False):
     '''
     Read all files in collection and return the tf count. The output array
@@ -134,15 +144,17 @@ def get_tags(vocab, weights, indDoc, topN=20):
     sortW = weights[indDoc,:].argsort()
     result = [vocab[i] for i in reversed(sortW[-topN:])]
     return result
-    
+
+def gen_speech_info():
+    info = read_info()
+    N = len(info)
+    for i in range(N):
+        data = info[i]
+        path = data[0].split("/")[-1]
+        print "%d %s" % (i, path)
     
 if __name__ == '__main__':
-    #(vocab,tf) = read_corpus()
-    #weights = tfidf(tf)
-    #topWords = get_tags(vocab, weights, 0) # get top 20 words for Obama's Acceptance Speech
-    #print topWords
-    info = read_info()
-    for i in range(len(info)):
-        path = info[i][0].split("/")[-1]
-        print "%d %s" % (i, path)
+    gen_speech_info()
+
+    
         
