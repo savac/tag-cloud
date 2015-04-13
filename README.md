@@ -33,6 +33,31 @@ Let's print the tags for the first document in info.tsv which is Barack Obama's 
 topWords = utils.get_tags(vocab, weights, 0)
 print topWords
 ```
+Result:<br>
+```
+['McCain',
+ 'promise',
+ 'John',
+ 'Bush',
+ 'whiners',
+ 'Iraq',
+ 'Democrats',
+ 'keep',
+ 'jobs',
+ 'George',
+ 'renewable',
+ 'tough',
+ 'america',
+ 'tonight',
+ 'Clinton',
+ 'cars',
+ 'change',
+ 'politics',
+ 'Republicans',
+ 'veterans']
+```
+<br>
+
 
 So far we have obtained the tags for a given document. As a more advanced task We can cluster (or categorise) the tags to get a deeper meaning of the topics discussed in the speech. However before we can cluster the tags we need to create a vector representation for the words in our vocabulary. We use the word2vec tool and train on our collection of president's speeches. It's also possible train on any other large corpus as we are only trying to find out what words appear close to each other:<br>
 ```
@@ -43,6 +68,14 @@ Now we can cluster the tags found out earlier so we can get a better idea what t
 ```
 topClusters = clustering.run_clustering(topWords)
 ```
+Results:<br>
+```
+[['tonight'],
+ ['John',  'Bush',  'whiners',  'Iraq',  'Democrats',  'George',  'renewable',  'america',  'Clinton',  'cars',  'politics',  'Republicans',  'veterans'],
+ ['jobs'],
+ ['promise', 'keep', 'change'],
+ ['tough']]
 
-
+```
+We can see two distinct topics emerging. Barack Obama,the Democratic Party nominee at the time, is discussing the his opponent and the current presindent in in one of the topics. The topic containing 'promise', 'keep' and 'change' is possible related to his intentions if he became president.
 
