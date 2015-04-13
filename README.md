@@ -1,11 +1,11 @@
 #### Tag-cloud for the speeches of US presidents
 
 This is a project that generates a tag cloud for important speeches made by US Presidents. The pre-requisites for running the code in this repo are:
-Python 2.7.x
-NumPy
-NLTK
-Gensim
-Scikit-Learn
+Python 2.7.x<br>
+NumPy<br>
+NLTK<br>
+Gensim<br>
+Scikit-Learn<br>
 
 All code needs to be run from directoy code/ using the Python command line or a suitable wrapper such as iPython.<br>
 
@@ -35,10 +35,13 @@ print topWords
 
 Before we can cluster the tags we need to create a vector representation for the words in our vocabulary. We use the word2vec tool and train on our collection of president's speeches. It's also possible train on any other large corpus as we are only trying to find out what words appear close to each other:<br>
 '''
-utils_word2vec.write_model_word2vec() # this will create a f
+utils_word2vec.write_model_word2vec() # this will create a word2vec model and save it on the disk
 '''
 
-
+Now we can cluster the tags found out earlier in groups so we can get a better idea what topics are discussed in the speech:<br>
+```
+topClusters = clustering.run_clustering(topWords)
+```
 
 
 
