@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../lib/d3/d3.js"></script>
+<script src="../d3.layout.cloud.js"></script>
+<script>
+
+var fill = d3.scale.category20();
+
+			var words = [{"text":"financial"},{"text":"rescue"},{"text":"program"},{"text":"average"},
+{"text":"american"},{"text":"household"},{"text":"america"},{"text":"businesses"},
+{"text":"civil"},{"text":"rights"},{"text":"marchers"},{"text":"middle"},
+{"text":"class"},{"text":"tax"},{"text":"rural"},{"text":"communities"},
+{"text":"america"},{"text":"greatest"},{"text":"source"},{"text":"social security"}];
+			
+var width = 800;
+var height = 800;
+var myColour = ["#3300FF","#4605EC","#5809DA","#6B0EC7","#7D13B5","#9017A2",
+				 "#A21C90",	"#B5207D","#C7256B","#DA2A58","#EC2E46","#FF3333",
+				 "#00CCFF","#17C3F6","#2EB9EC","#46B0E3","#5DA7DA","#FF6699",
+				 "#749ED1","#8B94C7","#A28BBE","#B982B5","#D179AC", "#E86FA2"];
+
+
+for (var i = 0; i < words.length; i++) {
+ words[i].size = (Math.random()+ 0.25)*90;
+}
+
+d3.layout.cloud()
+  .size([width, height])
+  .words(words)
+  .padding(5)
+  .rotate(function() { return ~~ 0; })
+  .font("Impact")
+  .fontSize(function(d) { return d.size;})
+  .on("end", draw)
+  .start();
+
+function draw(words) {
+    d3.select("body")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", "translate("+ width/2 +","+ height/2 +")")
+      .selectAll("text")
+      .data(words)
+      .enter()
+      .append("text")
+      .style("font-size", function(d) { return d.size + "px"; })
+	  .style("font-family", "Impact")
+	  //.style("font-weight", "bold")
+      .style("fill", function(d, i) { return /*fill(i)*/myColour[Math.floor(Math.random() * myColour.length)]; })
+      .attr("text-anchor", "middle")
+      .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")"; 
+      })
+      .text(function(d) { return d.text; })
+      
+}
+
+</script>
+</body>
+</html>
