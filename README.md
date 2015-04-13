@@ -77,5 +77,5 @@ Results:<br>
  ['tough']]
 
 ```
-We can see two distinct topics emerging. Barack Obama,the Democratic Party nominee at the time, is discussing the his opponent and the current presindent in in one of the topics. The topic containing 'promise', 'keep' and 'change' is possible related to his intentions if he became president.
+We can see two distinct topics emerging. Barack Obama,the Democratic Party nominee at the time, is discussing the his opponent and the current presindent in in one of the topics. The topic containing 'promise', 'keep' and 'change' is related to his intentions if he became president.
 
