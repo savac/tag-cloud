@@ -10,6 +10,7 @@ import os
 import nltk.data
 import sys
 
+
 def sentence_process(sentence):
 
     '''
@@ -69,6 +70,7 @@ def read_corpus_word2vec():
     The NLTK data package includes
     a pre-trained Punkt tokenizer for English.
     '''
+
     sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
     sentences = []
     NUM_DOCS = len(info) # get number of docs
@@ -90,7 +92,7 @@ def write_model_word2vec():
     '''
 
     sentences = read_corpus_word2vec()# MySentences('../data_clean/')
-    word2vecModel = gensim.models.Word2Vec(sentences)
+    word2vecModel = gensim.models.Word2Vec(sentences, min_count=1, size=50)
     word2vecModel.save('../word2vec/mymodel')
     print word2vecModel.syn0.shape
 
