@@ -28,18 +28,18 @@ Use one of the models to assign weights to each of the words in every document:<
 weights = models.tfidf(tf) # get the TD*IDF weights
 ```
 
-Let's print the tags for the first document in info.tsv which Barack Obama's Acceptance Speech for the Nomination from the Democrat party:<br>
+Let's print the tags for the first document in info.tsv which is Barack Obama's Acceptance Speech for the Nomination from the Democrat party:<br>
 ```
 topWords = utils.get_tags(vocab, weights, 0)
 print topWords
 ```
 
-Before we can cluster the tags we need to create a vector representation for the words in our vocabulary. We use the word2vec tool and train on our collection of president's speeches. It's also possible train on any other large corpus as we are only trying to find out what words appear close to each other:<br>
+So far we have obtained the tags for a given document. We can now cluster (or categorise) the tags to get a deeper meaning of the topics discussed in the speech. Before we can cluster the tags we need to create a vector representation for the words in our vocabulary. We use the word2vec tool and train on our collection of president's speeches. It's also possible train on any other large corpus as we are only trying to find out what words appear close to each other:<br>
 ```
 utils_word2vec.write_model_word2vec() # this will create a word2vec model and save it on the disk
 ```
 
-Now we can cluster the tags found out earlier in groups so we can get a better idea what topics are discussed in the speech:<br>
+Now we can cluster the tags found out earlier so we can get a better idea what topics are discussed in the given speech:<br>
 ```
 topClusters = clustering.run_clustering(topWords)
 ```
