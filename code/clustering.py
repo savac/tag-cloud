@@ -18,22 +18,39 @@ def run_clustering(tags):
     print "Reading word2vec model"
     model = utils_word2vec.read_word2vec()
     word_vectors = model.syn0
-    num_clusters = 2*len(tags) - 1
+    num_clusters = (len(tags)+1)/4
 
     # Initalize a k-means object and use it to extract centroids
     print "Running K means"
+    '''
     kmeans_clustering = KMeans( n_clusters = num_clusters)
     kmeanFit = kmeans_clustering.fit( word_vectors )
     idx = kmeanFit.labels_
     centers = kmeanFit.cluster_centers_
+    '''
+    vecabular_size = len(model.index2word)
+
+    word_sub_vectors = []
+    sub_vecab = []
+    for i in range(0, vecabular_size):
+        word = model.index2word[i]
+        for tag in tags:
+            if tag.lower() == word:
+                word_sub_vectors.append(word_vectors[i])
+                sub_vecab.append(word)
+
+    kmeans_clustering = KMeans( n_clusters = num_clusters)
+    kmeanFit = kmeans_clustering.fit( word_sub_vectors )
+    idx = kmeanFit.labels_
 
     # Create a Word / Index dictionary, mapping each vocabulary word to
     # a cluster number
-    word_centroid_map = dict(zip( model.index2word, idx ))
+    word_centroid_map = dict(zip( sub_vecab, idx ))
 
 
     clusterDist = kmeans_clustering.transform( word_vectors )
 
+    '''
     cluster_tags = []
     cluster_id = []
     for tag in tags:
@@ -41,11 +58,16 @@ def run_clustering(tags):
             id = word_centroid_map[tag.lower()]
             cluster_id.append(id)
             cluster_tags.append(model.index2word[np.argmin(clusterDist[:,id])])
+    '''
 
-    print "Bag of centroids tags:"
-    print cluster_tags
+    tag_clusters = [[] for x in xrange(num_clusters)]
+    for tag in tags:
+        if tag.lower() in word_centroid_map:
+            id = word_centroid_map[tag.lower()]
+            tag_clusters[id].append(tag)
 
-    return cluster_tags
+
+    return tag_clusters
 
 #    if __name__ == '__main__':
 
