@@ -1,12 +1,12 @@
 #### Tag-cloud for the speeches of US presidents
-This is a project that generates a tag cloud for important speeches made by US Presidents. <br>
+This is a project that generates a tag cloud for important speeches made by US Presidents. The speeches have been uploaded to directory data/. The tab-separated file info.tsv in the head directory contains the details about the speeches such as the president's name, speech title and date.<br>
 
-The pre-requisites for running the code in this repo are:<br>
-Python 2.7.x<br>
-NumPy<br>
-NLTK<br>
-Gensim<br>
-Scikit-Learn<br>
+The prerequisites for running the code in this repo are:<br>
+* Python 2.7.x<br>
+* NumPy<br>
+* NLTK<br>
+* Gensim<br>
+* Scikit-Learn<br>
 
 All code needs to be run from directory code/ using the Python command line or a suitable wrapper such as iPython.<br>
 
@@ -34,7 +34,7 @@ topWords = utils.get_tags(vocab, weights, 0)
 print topWords
 ```
 
-So far we have obtained the tags for a given document. We can now cluster (or categorise) the tags to get a deeper meaning of the topics discussed in the speech. Before we can cluster the tags we need to create a vector representation for the words in our vocabulary. We use the word2vec tool and train on our collection of president's speeches. It's also possible train on any other large corpus as we are only trying to find out what words appear close to each other:<br>
+So far we have obtained the tags for a given document. As a more advanced task We can cluster (or categorise) the tags to get a deeper meaning of the topics discussed in the speech. However before we can cluster the tags we need to create a vector representation for the words in our vocabulary. We use the word2vec tool and train on our collection of president's speeches. It's also possible train on any other large corpus as we are only trying to find out what words appear close to each other:<br>
 ```
 utils_word2vec.write_model_word2vec() # this will create a word2vec model and save it on the disk
 ```
